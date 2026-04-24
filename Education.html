@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>EduHub | Interactive Learning Portal for Pupils</title>
+    <!-- Google Fonts & simple reset for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #f8faff 0%, #eff3fc 100%);
+            color: #1a2c3e;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* container utility */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* header styles */
+        .header {
+            background: #ffffffdd;
+            backdrop-filter: blur(12px);
+            background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%);
+            box-shadow: 0 8px 20px rgba(0, 20, 50, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(66, 153, 225, 0.2);
+        }
+
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 16px 0;
+        }
+
+        .logo h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1E3C72, #2A5298);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #4a627a;
+            display: block;
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            color: #4a627a;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #2c3e66;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover {
+            color: #2c7be5;
+        }
+
+        /* hero section */
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem 3rem 1rem;
+        }
+
+        .hero h2 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #1f3a6b, #2b4c8c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            max-width: 700px;
+            margin: 1rem auto 0;
+        }
+
+        /* subject grid */
+        .subjects-section {
+            padding: 2rem 0 4rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #1e2f47;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: #2c7be5;
+            margin: 0.6rem auto 0;
+            border-radius: 4px;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* subject card */
+        .subject-card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.08);
+            transition: all 0.25s ease;
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .subject-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 40px -14px rgba(28, 52, 84, 0.2);
+        }
+
+        .card-img {
+            height: 140px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .math-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .science-bg { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .history-bg { background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%); }
+        .literature-bg { background: linear-gradient(135deg, #ee5a6f 0%, #f3928b 100%); }
+        .geography-bg { background: linear-gradient(135deg, #1c92d2 0%, #f2fcfe 100%); }
+        .art-bg { background: linear-gradient(135deg, #cb356b 0%, #bd3f32 100%); }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .subject-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subject-desc {
+            color: #4a5568;
+            margin: 0.5rem 0 1rem;
+            line-height: 1.4;
+        }
+
+        .topic-list {
+            list-style: none;
+            margin: 1rem 0;
+            background: #f8fafd;
+            border-radius: 20px;
+            padding: 0.8rem 1rem;
+        }
+
+        .topic-list li {
+            padding: 0.4rem 0;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px dashed #e2edf7;
+        }
+
+        .topic-list li:last-child {
+            border-bottom: none;
+        }
+
+        .topic-icon {
+            font-size: 1.1rem;
+        }
+
+        .explore-btn {
+            background: none;
+            border: 2px solid #2c7be5;
+            color: #2c7be5;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            margin-top: 0.8rem;
+            background: white;
+        }
+
+        .explore-btn:hover {
+            background: #2c7be5;
+            color: white;
+        }
+
+        /* modal for subject deep dive */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 700px;
+            width: 90%;
+            border-radius: 32px;
+            padding: 1.8rem 2rem 2rem;
+            position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 40px rgba(0,0,0,0.2);
+            animation: fadeUp 0.2s ease;
+        }
+
+        @keyframes fadeUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 18px;
+            right: 24px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #f0f2f5;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: 0.1s;
+        }
+
+        .close-modal:hover {
+            background: #e2e8f0;
+        }
+
+        .modal-subject-title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        .modal-resource-list {
+            margin-top: 1.2rem;
+        }
+
+        .resource-item {
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: 0.1s;
+        }
+
+        .resource-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+            color: #0f2b3d;
+        }
+
+        .resource-item p {
+            color: #2d3e50;
+            margin-bottom: 10px;
+        }
+
+        .resource-link {
+            display: inline-block;
+            background: #2c7be5;
+            color: white;
+            text-decoration: none;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+
+        .resource-link:hover {
+            background: #1b5bbf;
+        }
+
+        .fun-fact {
+            background: #eef6ff;
+            border-left: 6px solid #2c7be5;
+            padding: 1rem;
+            border-radius: 24px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            background: #0f1a2c;
+            color: #b0c4de;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 700px) {
+            .nav-bar {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .hero h2 {
+                font-size: 2rem;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+        button {
+            font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <div class="nav-bar">
+            <div class="logo">
+                <h1>📚 EduHub</h1>
+                <span>learn · explore · grow</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#subjects">Subjects</a></li>
+                <li><a href="#" id="inspireBtn">✨ Daily Spark</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <div class="hero">
+            <h2>Your gateway to knowledge 🧠</h2>
+            <p>Access engaging subjects, interactive topics, and hand-picked learning resources — all in one playful hub for curious pupils.</p>
+        </div>
+    </div>
+
+    <section id="subjects" class="subjects-section">
+        <div class="container">
+            <div class="section-title">📖 Explore Subjects</div>
+            <div class="subjects-grid" id="subjectsGrid"></div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container">
+        <p>🌟 EduHub — where young minds discover the joy of learning. Every subject opens a new door.</p>
+        <p style="margin-top: 12px; font-size: 0.8rem;">© 2025 EduHub | For pupils & teachers</p>
+    </div>
+</footer>
+
+<!-- Modal for detailed subject view -->
+<div id="subjectModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div id="modalDynamicContent">
+            <!-- dynamic content loaded via JS -->
+        </div>
+    </div>
+</div>
+
+<script>
+    // ---------- SUBJECTS DATA (enriched with topics, resources, fun facts) ----------
+    const subjectsData = [
+        {
+            id: "math",
+            name: "🧮 Mathematics",
+            shortDesc: "Numbers, patterns, and logical thinking.",
+            bgClass: "math-bg",
+            topics: ["Fractions & Decimals", "Algebra basics", "Geometry & Shapes", "Data handling"],
+            resources: [
+                { title: "Khan Academy - Math", desc: "Interactive exercises and video lessons.", url: "https://www.khanacademy.org/math" },
+                { title: "Cool Math Games", desc: "Playful way to practice arithmetic.", url: "https://www.coolmathgames.com/" },
+                { title: "Math is Fun", desc: "Illustrated explanations and puzzles.", url: "https://www.mathsisfun.com/" }
+            ],
+            funFact: "Did you know? Zero (0) was first used as a number in ancient India over 1500 years ago!"
+        },
+        {
+            id: "science",
+            name: "🔬 Science",
+            shortDesc: "Explore the wonders of physics, chemistry & biology.",
+            bgClass: "science-bg",
+            topics: ["Human Body Systems", "States of Matter", "Ecosystems", "Simple Machines"],
+            resources: [
+                { title: "NASA Climate Kids", desc: "Fun science & earth facts.", url: "https://climatekids.nasa.gov/" },
+                { title: "National Geographic Kids", desc: "Amazing animals and experiments.", url: "https://kids.nationalgeographic.com/" },
+                { title: "Mystery Science", desc: "Mini-lessons & hands-on activities.", url: "https://mysteryscience.com/" }
+            ],
+            funFact: "Octopuses have three hearts and blue blood! 🐙"
+        },
+        {
+            id: "history",
+            name: "🏰 History",
+            shortDesc: "Uncover stories of ancient civilizations and heroes.",
+            bgClass: "history-bg",
+            topics: ["Ancient Egypt", "Roman Empire", "Medieval Times", "Famous Explorers"],
+            resources: [
+                { title: "BBC Bitesize History", desc: "Engaging videos & quizzes.", url: "https://www.bbc.co.uk/bitesize/subjects/z7vwxnb" },
+                { title: "Smithsonian History Explorer", desc: "Museum artifacts & stories.", url: "https://historyexplorer.si.edu/" },
+                { title: "KidsKonnect History", desc: "Worksheets and timelines.", url: "https://kidskonnect.com/history/" }
+            ],
+            funFact: "The Great Wall of China is over 13,000 miles long — it’s the longest structure ever built!"
+        },
+        {
+            id: "literature",
+            name: "📖 Literature",
+            shortDesc: "Dive into stories, poems, and creative writing.",
+            bgClass: "literature-bg",
+            topics: ["Fables & Folktales", "Poetry for Kids", "Character Analysis", "Creative Writing"],
+            resources: [
+                { title: "Storyline Online", desc: "Celebrities read beloved children's books.", url: "https://storylineonline.net/" },
+                { title: "Oxford Owl Reading", desc: "Free ebooks and reading tips.", url: "https://www.oxfordowl.co.uk/" },
+                { title: "Poetry Foundation Kids", desc: "Playful poems for young readers.", url: "https://www.poetryfoundation.org/children" }
+            ],
+            funFact: "Dr. Seuss wrote 'Green Eggs and Ham' after being challenged to use only 50 different words!"
+        },
+        {
+            id: "geography",
+            name: "🌍 Geography",
+            shortDesc: "Discover countries, capitals, and amazing landscapes.",
+            bgClass: "geography-bg",
+            topics: ["World Maps", "Landforms & Biomes", "Culture & Traditions", "Natural Wonders"],
+            resources: [
+                { title: "World Geography Games", desc: "Learn capitals & flags with quizzes.", url: "https://world-geography-games.com/" },
+                { title: "National Geographic World", desc: "Facts about continents & wildlife.", url: "https://kids.nationalgeographic.com/geography" },
+                { title: "Seterra Geography", desc: "Map quizzes for all ages.", url: "https://www.seterra.com/" }
+            ],
+            funFact: "Canada has more lakes than the rest of the world's lakes combined — over 2 million!"
+        },
+        {
+            id: "art",
+            name: "🎨 Art",
+            shortDesc: "Express creativity with drawing, painting & design.",
+            bgClass: "art-bg",
+            topics: ["Color Theory", "Famous Artists", "Sculpture basics", "Digital Art"],
+            resources: [
+                { title: "Art for Kids Hub", desc: "Step-by-step drawing tutorials.", url: "https://artforkidshub.com/" },
+                { title: "Tate Kids", desc: "Play art games and explore masterpieces.", url: "https://www.tate.org.uk/kids" },
+                { title: "MetKids", desc: "Interactive art from The Met museum.", url: "https://www.metmuseum.org/art/online-features/metkids/" }
+            ],
+            funFact: "Leonardo da Vinci could write with one hand and draw with the other at the same time! ✍️"
+        }
+    ];
+
+    // helper to render subject cards dynamically
+    function renderSubjectCards() {
+        const grid = document.getElementById('subjectsGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        subjectsData.forEach(sub => {
+            const card = document.createElement('div');
+            card.className = 'subject-card';
+            card.setAttribute('data-id', sub.id);
+            // topics preview: first 2 topics
+            const topicPreview = sub.topics.slice(0, 2).map(t => `<li><span class="topic-icon">📌</span> ${t}</li>`).join('');
+            card.innerHTML = `
+                <div class="card-img ${sub.bgClass}"></div>
+                <div class="card-content">
+                    <div class="subject-title">${sub.name}</div>
+                    <div class="subject-desc">${sub.shortDesc}</div>
+                    <ul class="topic-list">
+                        ${topicPreview}
+                        ${sub.topics.length > 2 ? `<li><span class="topic-icon">✨</span> +${sub.topics.length-2} more topics</li>` : ''}
+                    </ul>
+                    <button class="explore-btn" data-subject-id="${sub.id}">🔍 Explore full subject</button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        // add event listeners to all explore buttons
+        document.querySelectorAll('.explore-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const subjectId = btn.getAttribute('data-subject-id');
+                const subject = subjectsData.find(s => s.id === subjectId);
+                if (subject) openSubjectModal(subject);
+            });
+        });
+    }
+
+    // modal logic
+    const modal = document.getElementById('subjectModal');
+    const modalContentContainer = document.getElementById('modalDynamicContent');
+    const closeModalBtn = document.querySelector('.close-modal');
+
+    function openSubjectModal(subject) {
+        // build resources html
+        let resourcesHtml = '';
+        subject.resources.forEach(res => {
+            resourcesHtml += `
+                <div class="resource-item">
+                    <h4>📘 ${res.title}</h4>
+                    <p>${res.desc}</p>
+                    <a href="${res.url}" target="_blank" class="resource-link" rel="noopener noreferrer">Visit Resource →</a>
+                </div>
+            `;
+        });
+
+        // topics list
+        const topicsList = subject.topics.map(t => `<li style="margin-bottom: 8px;">✨ ${t}</li>`).join('');
+
+        const contentHtml = `
+            <div style="display: flex; align-items: baseline; justify-content: space-between;">
+                <h2 class="modal-subject-title">${subject.name}</h2>
+            </div>
+            <p style="margin: 5px 0 10px; color: #2c5282;">${subject.shortDesc}</p>
+            <div style="margin: 1rem 0 0.5rem;">
+                <h3 style="font-size: 1.3rem;">📌 Key Topics</h3>
+                <ul style="margin-left: 1.2rem; margin-top: 8px;">
+                    ${topicsList}
+                </ul>
+            </div>
+            <div class="modal-resource-list">
+                <h3>📚 Learning Resources</h3>
+                ${resourcesHtml || '<p>More resources coming soon!</p>'}
+            </div>
+            <div class="fun-fact">
+                💡 <strong>Fun fact:</strong> ${subject.funFact}
+            </div>
+            <div style="margin-top: 20px; font-size: 0.8rem; text-align: center; color: #5a6874;">
+                ⭐ Click any link to explore external learning materials. Stay curious!
+            </div>
+        `;
+        modalContentContainer.innerHTML = contentHtml;
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    // Daily Spark / random fact inspiration
+    function showRandomInspiration() {
+        const randomIndex = Math.floor(Math.random() * subjectsData.length);
+        const randomSubject = subjectsData[randomIndex];
+        // simple alert but friendly, can use a small toast? use modal-like but lighter?
+        // Use an alert with nice style? we can create a small temporary banner, but for simplicity we can show modal with random subject?
+        // But that might be confusing. Let's instead show a fun alert replacement: we can create a small div notif.
+        // Alternatively just use a confirm-style? Better: Use the modal but customized? to keep consistent, we open the random subject modal.
+        openSubjectModal(randomSubject);
+    }
+
+    // attach event to inspire button
+    const inspireBtn = document.getElementById('inspireBtn');
+    if (inspireBtn) {
+        inspireBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showRandomInspiration();
+        });
+    }
+
+    // modal close actions
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeModal);
+    }
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+            closeModal();
+        }
+    });
+
+    // smooth navigation for "Subjects" link
+    const subjectsLink = document.querySelector('.nav-links a[href="#subjects"]');
+    if (subjectsLink) {
+        subjectsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('subjects').scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+    // home link
+    const homeLink = document.querySelector('.nav-links a[href="#"]');
+    if (homeLink) {
+        homeLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // initial render
+    renderSubjectCards();
+
+    // optional: console welcome
+    console.log('EduHub ready! Pupils can access all subjects and interactive resources.');
+</script>
+</body>
+</html>
